@@ -61,7 +61,7 @@ public class SpecialManager : MonoBehaviour {
     // turns the passed collider on, waits, then turns it off again
     private IEnumerator pulseCollider (Collider col) {
         col.enabled = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         col.enabled = false;
     }
 }
