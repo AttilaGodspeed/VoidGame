@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// controls player movement, orientation, and the basic attack
+
+// needs to be cleaned up
+
 public class PlayerManager : MonoBehaviour {
     
     [SerializeField] private float runSpeed = 2.5f;
@@ -10,8 +14,8 @@ public class PlayerManager : MonoBehaviour {
     [SerializeField] ParticleSystem basicAttackEffect;
     [SerializeField] SphereCollider basicAttackCollider;
 
-    [SerializeField] ParticleSystem specialAttackEffect;
-    [SerializeField] Collider specialAttackCollider;
+    //[SerializeField] ParticleSystem specialAttackEffect;
+    //[SerializeField] Collider specialAttackCollider;
 
     private float xAxis, zAxis, coolDown, deltaTime;
     private Vector3 nextPosition;
@@ -21,7 +25,7 @@ public class PlayerManager : MonoBehaviour {
 	void Start () {
         coolDown = 0;
         basicAttackCollider.enabled = false;
-        specialAttackCollider.enabled = false;
+        //specialAttackCollider.enabled = false;
 	}
 
     
@@ -29,8 +33,8 @@ public class PlayerManager : MonoBehaviour {
     void Update() {
         if(basicAttackCollider.enabled == true)
             basicAttackCollider.enabled = false;
-        if (specialAttackCollider.enabled == true)
-            specialAttackCollider.enabled = false;
+        //if (specialAttackCollider.enabled == true)
+        //    specialAttackCollider.enabled = false;
 
         // do nothing if game in pause state
         if (true) {
@@ -64,8 +68,10 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    /*
     public void specialAttack() {
         specialAttackEffect.Play();
         specialAttackCollider.enabled = true;
     }
+    */
 }
