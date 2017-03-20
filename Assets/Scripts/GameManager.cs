@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
             togglePause();
         }
 
-        // update special cooldown if nto paused
+        // update special cooldown if not paused
         if (!paused)
             coolDownText.text = "To Special: " + specialManager.getCooldown();//.toString("##");
     } 
@@ -99,5 +99,9 @@ public class GameManager : MonoBehaviour {
 
     public bool hasOrb() {
         return soulOrbs > 0;
+    }
+
+    public bool isPaused() {
+        return paused;
     }
 }
