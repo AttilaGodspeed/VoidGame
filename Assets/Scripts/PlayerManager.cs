@@ -1,71 +1,69 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+// controls player movement, orientation, and the basic attack
 
 public class PlayerManager : MonoBehaviour {
-    
-    [SerializeField] private float runSpeed = 2.5f;
-    [SerializeField] private float coolDownTime = 3f;
+    [SerializeField] GameManager gameManager;
 
+    // attack/movement modifiers
+    // speed at which the player moves
+    [SerializeField] private float runSpeed = 5f;
+    // time between basic attacks
+    [SerializeField] private float coolDownTime = 0.5f;
+    // the height off the ground (world-space) the player looks at while follwing the mouse
+    private float lookHeight = 1f;
+
+    // link fields for the basic attack
     [SerializeField] ParticleSystem basicAttackEffect;
     [SerializeField] SphereCollider basicAttackCollider;
 
-    [SerializeField] ParticleSystem specialAttackEffect;
-    [SerializeField] Collider specialAttackCollider;
-
     private float xAxis, zAxis, coolDown, deltaTime;
     private Vector3 nextPosition;
-    //private bool attackOff;
+    private Ray mouseRay;
+    private RaycastHit rayHit;
 
 	// Use this for initialization
 	void Start () {
         coolDown = 0;
         basicAttackCollider.enabled = false;
-        specialAttackCollider.enabled = false;
 	}
 
-    
-    // Update is called once per frame
+    // player inputs are controlled from here
     void Update() {
+        // disable collider if it's up
         if(basicAttackCollider.enabled == true)
             basicAttackCollider.enabled = false;
-        if (specialAttackCollider.enabled == true)
-            specialAttackCollider.enabled = false;
 
         // do nothing if game in pause state
-        if (true) {
+        if (!gameManager.isPaused()) {
             deltaTime = Time.deltaTime;
             // Update basic attack cooldown
             if (coolDown > 0) {
                 coolDown -= deltaTime;
-                //if (coolDown < (coolDownTime - 1))
-                //    basicAttackCollider.enabled = false;
             }
+
+            // Control Player Rotation
+            mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(mouseRay, out rayHit);
+            nextPosition.Set(rayHit.point.x, lookHeight, rayHit.point.z);
+            transform.LookAt(nextPosition);
 
             // Control Player Movement
             xAxis = Input.GetAxisRaw("Horizontal");
             zAxis = Input.GetAxisRaw("Vertical");
             nextPosition.Set(xAxis, 0.0f, zAxis);
 
-            if(xAxis != 0 && zAxis !=0)
-                transform.rotation = Quaternion.LookRotation(nextPosition);
-
             transform.Translate(nextPosition * runSpeed * deltaTime, Space.World);
 
-            // Control Basic Attack
-            if (Input.GetKeyDown(KeyCode.Space) && (coolDown <= 0)) {
+            // Control Basic Attack, activates on space or left click
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && (coolDown <= 0)) {
                 // play effect
                 basicAttackEffect.Play();
                 coolDown = coolDownTime;
 
-                // enable collider and check for collisions
+                // enable collider
                 basicAttackCollider.enabled = true;
             }
         }
-    }
-
-    public void specialAttack() {
-        specialAttackEffect.Play();
-        specialAttackCollider.enabled = true;
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyStack : MonoBehaviour {
 
+    [SerializeField] GameObject enemyPrefab;
+
     EnemyManager temp;
     Stack<EnemyManager> stack = new Stack<EnemyManager>();
 
@@ -13,7 +15,11 @@ public class EnemyStack : MonoBehaviour {
     }
 
     public void pop(Vector3 location) {
-        //print("popping bat");
+        // make more effects, if you need them
+        if (stack.Count < 3) {
+            Instantiate(enemyPrefab);
+            print("Instantiating Enemy....");
+        }
         temp = stack.Pop();
         if (temp != null) {
             temp.deploy(location);

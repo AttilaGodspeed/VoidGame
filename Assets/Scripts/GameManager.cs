@@ -3,15 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// This class manages the following:
+// Player status
+// Music
+// Pausing the game
+// inventory
+// UI elements not related to the pause screen
+
 public class GameManager : MonoBehaviour {
+    // other managers
+    [SerializeField] private PauseUIManager pauseUIManager;
+    [SerializeField] private SpecialManager specialManager;
+
+    // persistant UI elements
+    [SerializeField] private Text healthText, orbText, coolDownText;
+
+    // music
+    [SerializeField] private AudioSource gameMusic;
+    [SerializeField] private AudioSource pauseMusic;
+
+    // internal variables
     private bool paused;
     private int playerHealth, soulOrbs;
-    [SerializeField] Text healthText, orbText;
-    [SerializeField] GameObject colorFilter;
-    [SerializeField] UIManager uiManager;
-
-    [SerializeField] AudioSource gameMusic;
-    [SerializeField] AudioSource pauseMusic;
 
 	// Use this for initialization
 	void Start () {
@@ -19,15 +32,20 @@ public class GameManager : MonoBehaviour {
         soulOrbs = 0;
         healthText.text = "Health: " + playerHealth;
         orbText.text = "SoulOrbs: " + soulOrbs;
+        coolDownText.text = "To Special: 0";
         paused = false;
-        colorFilter.SetActive(false);
         gameMusic.Play();
 	}
 
     void Update() {
-        if(Input.GetKeyUp(KeyCode.Return)) {
+        // check for pause hit
+        if(Input.GetKeyDown(KeyCode.Return)) {
             togglePause();
         }
+
+        // update special cooldown if not paused
+        if (!paused)
+            coolDownText.text = "To Special: " + specialManager.getCooldown();//.toString("##");
     } 
 
     public void togglePause () {
@@ -43,8 +61,7 @@ public class GameManager : MonoBehaviour {
             gameMusic.Play();
             pauseMusic.Stop();
         }
-        colorFilter.SetActive(paused);
-        uiManager.toggleEnable(paused);
+        pauseUIManager.openClose(paused);
     }
 
     public void damagePlayer(int damage) {
@@ -71,7 +88,20 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void shatterOrb() {
+        if (soulOrbs > 0) {
+            soulOrbs--;
+            orbText.text = "SoulOrbs: " + soulOrbs;
+        }
+        healPlayer(5);
+        specialManager.shatter();
+    }
+
     public bool hasOrb() {
         return soulOrbs > 0;
+    }
+
+    public bool isPaused() {
+        return paused;
     }
 }
