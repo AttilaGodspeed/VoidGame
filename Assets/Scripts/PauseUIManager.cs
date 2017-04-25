@@ -44,12 +44,20 @@ public class PauseUIManager : MonoBehaviour {
 		if (inventoryManager.shatterLeftOrb(player.transform.position)) {
 			gameManager.healPlayer(5);
         	gameManager.togglePause();
+
+			// update tracker
+        	ScoreCounter.self.numShatter ++;
+			ScoreCounter.self.healthGained += 5;
 		}
     }
 	private void shatterRightOrb() {
 		if (inventoryManager.shatterRightOrb(player.transform.position)) {
 			gameManager.healPlayer(5);
         	gameManager.togglePause();
+
+			// update tracker
+        	ScoreCounter.self.numShatter ++;
+			ScoreCounter.self.healthGained += 5;
 		}
     }
 
