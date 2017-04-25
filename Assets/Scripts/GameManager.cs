@@ -10,6 +10,10 @@ using UnityEngine.UI;
 // UI elements not related to the pause screen
 
 public class GameManager : MonoBehaviour {
+
+    // the total number of portals in the level
+    [SerializeField] private int numPortals;
+
     // other managers
     [SerializeField] private PauseUIManager pauseUIManager;
     //[SerializeField] private SpecialManager specialManager;
@@ -48,6 +52,16 @@ public class GameManager : MonoBehaviour {
         //if (!paused)
         //    coolDownText.text = "To Special: " + specialManager.getCooldown();//.toString("##");
     } 
+
+    public void portalKilled() {
+        // update stats
+        ScoreCounter.self.portalKills ++;
+
+        // check if all portals are dead
+        if (ScoreCounter.self.portalKills >= numPortals) {
+            print("All Portals are dead, woot woot!");
+        }
+    }
 
     public void togglePause () {
         if (!paused) {

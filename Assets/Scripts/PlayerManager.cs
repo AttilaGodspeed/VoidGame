@@ -132,6 +132,9 @@ public class PlayerManager : MonoBehaviour {
 
                 // enable collider
                 basicAttackCollider.enabled = true;
+
+                // update tracker
+                ScoreCounter.self.numBasic ++;
             }
         }
     }

@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour {
     [SerializeField] private EnemyStack parentStack;
 
     // other stats
-    [SerializeField] private int maxHealth = 1;
+    [SerializeField] private int maxHealth = 2;
     [SerializeField] private EffectStack deathStack;
 
     [SerializeField] private Transform player; //the enemy's target
@@ -20,8 +20,11 @@ public class EnemyManager : MonoBehaviour {
     [SerializeField] private float rotationSpeed = 3; //speed of turning
 
     // stats for the attack
-    [SerializeField] private float attackRange, attackRadius, attackDamage, attackCooldown;
-    [SerializeField] private ParticleSystem attackEffect;
+    [SerializeField] private float attackRange = 1f; // distance enemy will start attacking from
+    [SerializeField] private int attackDamage = 1; // the damage the attack does (integer)
+    [SerializeField] private float attackCooldown = 0.5f; // time in seconds until it can attack again
+
+    [SerializeField] private ParticleSystem attackEffect; // attack SFx
 
     private Transform targetPosition;
     private bool los;
@@ -57,6 +60,10 @@ public class EnemyManager : MonoBehaviour {
             health -= damage;
             if (health < 1) {
                 deathStack.pop(gameObject.transform.position);
+
+                // update counter
+                ScoreCounter.self.enemyKills ++;
+
                 restack();
             }
         }
@@ -85,8 +92,9 @@ public class EnemyManager : MonoBehaviour {
                 cooldown = attackCooldown;
 
                 // do damage to player
-                gameManager.damagePlayer(1);
-                // update UI
+                gameManager.damagePlayer(attackDamage);
+                // update tracker
+			    ScoreCounter.self.healthLost -= attackDamage;
             }
         }
     }

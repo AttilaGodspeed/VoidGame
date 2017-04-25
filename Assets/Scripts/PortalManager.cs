@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PortalManager : MonoBehaviour {
 
+    [SerializeField] private GameManager gameManager;
+
     // stack of enemies to spawn, and spawn offset
     [SerializeField] private EnemyStack enemyStack;
     [SerializeField] private Vector3 offSet;
-    //[SerializeField] private float xOffset = 0f;
-    //[SerializeField] private float zOffset = 2f;
     [SerializeField] private float coolDownTime;
 
     // stack of soul orbs to use
@@ -48,6 +48,9 @@ public class PortalManager : MonoBehaviour {
             if (health < 1) {
                 deathStack.pop(gameObject.transform.position);
                 soulOrbStack.pop(gameObject.transform.position);
+
+                gameManager.portalKilled();
+
                 gameObject.SetActive(false);
             }
         }

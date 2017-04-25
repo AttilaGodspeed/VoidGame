@@ -181,6 +181,9 @@ public class InventoryManager : MonoBehaviour {
 					rangeSpecial.deploy(playerPos, cursorPos);
 				else
 					forceSpecial.deploy(playerPos, cursorPos);
+				
+				// update tracker
+                ScoreCounter.self.num1h ++;
 			}
 			else {
 				if (tempSpecial == "AR" || tempSpecial == "RA")
@@ -189,6 +192,9 @@ public class InventoryManager : MonoBehaviour {
 					areaForceSpecial.deploy(cursorPos, playerPos);
 				else
 					rangeForceSpecial.deploy(cursorPos, playerPos);
+
+				// update tracker
+                ScoreCounter.self.num2h ++;
 			}
 		}
 	}
