@@ -18,10 +18,11 @@ public class PortalManager : MonoBehaviour {
     [SerializeField] private EffectStack deathStack;
 
     // health, etc
-    [SerializeField] private int maxHealth = 5;
+    [SerializeField] private int maxHealth = 8;
 
-    private int health;
+    private int health, damage;
     private float coolDown;
+    private string temp;
 
     // Use this for initialization
     void Start () {
@@ -40,8 +41,10 @@ public class PortalManager : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Attack") {
-            health -= 1;
+        temp = other.tag;
+        if (temp.Contains("Attack")) {
+            damage = int.Parse(temp.Substring(0,1));
+            health -= damage;
             if (health < 1) {
                 deathStack.pop(gameObject.transform.position);
                 soulOrbStack.pop(gameObject.transform.position);

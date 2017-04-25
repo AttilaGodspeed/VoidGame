@@ -27,7 +27,8 @@ public class EnemyManager : MonoBehaviour {
     private bool los;
     private RaycastHit impact;
     private float distance, cooldown;
-    private int health;
+    private int health, damage;
+    private string temp;
 
     void Awake() {
         // add self to the stack of its type
@@ -49,9 +50,11 @@ public class EnemyManager : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        print("Enemy collided with trigger: " + other.name + " which has a tag of: " + other.tag);
-        if (other.tag == "Attack") {
-            health -= 1;
+        temp = other.tag;
+        print("Enemy collided with trigger: " + other.name + " which has a tag of: " + temp);
+        if (temp.Contains("Attack")) {
+            damage = int.Parse(temp.Substring(0,1));
+            health -= damage;
             if (health < 1) {
                 deathStack.pop(gameObject.transform.position);
                 restack();

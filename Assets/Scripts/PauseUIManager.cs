@@ -1,50 +1,66 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// this class is for manaaging the commands and controls within the pause screen, and its UI elements
+// this class is for mananging the commands and controls within the pause screen, and its UI elements
 
 public class PauseUIManager : MonoBehaviour {
 
 	// Other Managers
 	[SerializeField] private GameManager gameManager;
-	[SerializeField] private SpecialManager specialManager;
+	[SerializeField] private InventoryManager inventoryManager;
+	[SerializeField] private PlayerManager player;
 
-	// UI compontens
-	[SerializeField] private GameObject colorFilter;
+	// the overall pause screen UI element group
+	[SerializeField] private GameObject pauseUIElements;
+
+	// specific UI compontents
 	[SerializeField] private Button unPauseButton;
-    [SerializeField] private Button shatterOrbButton;
-    [SerializeField] private Button specialAttackButton;
+	[SerializeField] private Button leftShatterButton;
+	[SerializeField] private Button rightShatterButton;
+	[SerializeField] private Button leftCycleButton;
+	[SerializeField] private Button rightCycleButton;
 
     
     void Start () {
     	// when using buttons, assign functions to them
 		unPauseButton.onClick.AddListener(unPause);
-        shatterOrbButton.onClick.AddListener(shatterOrb);
-        specialAttackButton.onClick.AddListener(specialAttack);
+		leftCycleButton.onClick.AddListener(cycleLeft);
+		rightCycleButton.onClick.AddListener(cycleRight);
+		leftShatterButton.onClick.AddListener(shatterLeftOrb);
+		rightShatterButton.onClick.AddListener(shatterRightOrb);
+
     	// have all elements closed at start
     	openClose(false);
     }
 
 	// opens/closes all pause screen elements
 	public void openClose (bool open) {
-		colorFilter.SetActive(open);
-		unPauseButton.gameObject.SetActive(open);
-		shatterOrbButton.gameObject.SetActive(open);
-		specialAttackButton.gameObject.SetActive(open);
+		//leftCycleButton.gameObject.SetActive(open);
+		//rightCycleButton.gameObject.SetActive(open);
+		pauseUIElements.SetActive(open);
 	}
 
-	private void specialAttack() {
-		if (gameManager.hasOrb())
-			specialManager.specialAttack(-1);
-		else
-			print("No orbs for special attack!");
-        gameManager.togglePause();
+    private void shatterLeftOrb() {
+		if (inventoryManager.shatterLeftOrb(player.transform.position)) {
+			gameManager.healPlayer(5);
+        	gameManager.togglePause();
+		}
+    }
+	private void shatterRightOrb() {
+		if (inventoryManager.shatterRightOrb(player.transform.position)) {
+			gameManager.healPlayer(5);
+        	gameManager.togglePause();
+		}
     }
 
-    private void shatterOrb() {
-        gameManager.shatterOrb();
-        gameManager.togglePause();
-    }
+
+	private void cycleLeft() {
+		inventoryManager.cycleLeftHand();
+		print("cycle left button triggered");	
+	}
+	private void cycleRight() {
+		inventoryManager.cycleRightHand();
+	}
 
     private void unPause() {
         gameManager.togglePause();
