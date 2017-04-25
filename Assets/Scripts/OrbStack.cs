@@ -1,6 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+
+// Holds a stack of orbs of one type
+// Has no function to re-supply its contents,
+// make sure therre are enough orbs in the stack for all the portals
 
 public class OrbStack : MonoBehaviour {
     OrbManager temp;

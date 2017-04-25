@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OrbManager : MonoBehaviour {
 
     [SerializeField] OrbStack parentStack;
-    [SerializeField] GameManager gameManager;
+    [SerializeField] InventoryManager inventoryManager;
 
     void Awake() {
         reStack();	
@@ -15,7 +13,7 @@ public class OrbManager : MonoBehaviour {
         //print("Orb is colliding with " + col.gameObject.tag);
         if (col.gameObject.tag == "Player") {
             // add orb to inventory
-            gameManager.addOrb();
+            inventoryManager.addOrb(gameObject.name);
             // restack self
             reStack();
         }

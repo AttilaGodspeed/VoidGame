@@ -15,6 +15,7 @@ public class EffectStack : MonoBehaviour {
 	}
 	
     public void pop (Vector3 location) {
+        // make sure stack has plenty of effets (doesn't run out)
         if (stack.Count < 3) {
             Instantiate(effectPrefab);
             print("Instantiating Effect....");

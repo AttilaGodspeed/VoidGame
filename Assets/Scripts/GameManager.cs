@@ -7,16 +7,15 @@ using UnityEngine.UI;
 // Player status
 // Music
 // Pausing the game
-// inventory
 // UI elements not related to the pause screen
 
 public class GameManager : MonoBehaviour {
     // other managers
     [SerializeField] private PauseUIManager pauseUIManager;
-    [SerializeField] private SpecialManager specialManager;
+    //[SerializeField] private SpecialManager specialManager;
 
     // persistant UI elements
-    [SerializeField] private Text healthText, orbText, coolDownText;
+    [SerializeField] private Text healthText;//, orbText;
 
     // music
     [SerializeField] private AudioSource gameMusic;
@@ -24,28 +23,30 @@ public class GameManager : MonoBehaviour {
 
     // internal variables
     private bool paused;
-    private int playerHealth, soulOrbs;
+    private int playerHealth, soulOrbs, areaOrbs, rangeOrbs, forceOrbs;
 
 	// Use this for initialization
 	void Start () {
         playerHealth = 10;
-        soulOrbs = 0;
+        soulOrbs = areaOrbs = rangeOrbs = forceOrbs = 0;
         healthText.text = "Health: " + playerHealth;
-        orbText.text = "SoulOrbs: " + soulOrbs;
-        coolDownText.text = "To Special: 0";
+        //orbText.text = "SoulOrbs: " + soulOrbs;
+        //coolDownText.text = "To Special: 0";
         paused = false;
         gameMusic.Play();
 	}
 
     void Update() {
         // check for pause hit
-        if(Input.GetKeyDown(KeyCode.Return)) {
-            togglePause();
+        if (!paused) {
+            if(Input.GetKeyDown(KeyCode.Space)) {
+                togglePause();
+            }
         }
 
         // update special cooldown if not paused
-        if (!paused)
-            coolDownText.text = "To Special: " + specialManager.getCooldown();//.toString("##");
+        //if (!paused)
+        //    coolDownText.text = "To Special: " + specialManager.getCooldown();//.toString("##");
     } 
 
     public void togglePause () {
@@ -76,26 +77,37 @@ public class GameManager : MonoBehaviour {
         healthText.text = "Health: " + playerHealth;
     }
 
-    public void addOrb() {
+    // adds an orb to inventory
+    public void addOrb(string type) {
         soulOrbs++;
-        orbText.text = "SoulOrbs: " + soulOrbs;
+        //orbText.text = "SoulOrbs: " + soulOrbs;
+
+        if(type.StartsWith("area"))
+            areaOrbs ++;
+        else if(type.StartsWith("range"))
+            rangeOrbs ++;
+        else   
+            forceOrbs ++;
     }
 
     public void dropOrb() {
         if (soulOrbs > 0) {
             soulOrbs--;
-            orbText.text = "SoulOrbs: " + soulOrbs;
+            //orbText.text = "SoulOrbs: " + soulOrbs;
         }
     }
 
+/*
     public void shatterOrb() {
+        // do the check for orbs in the UI
         if (soulOrbs > 0) {
             soulOrbs--;
             orbText.text = "SoulOrbs: " + soulOrbs;
         }
         healPlayer(5);
-        specialManager.shatter();
+        //specialManager.shatter();
     }
+*/
 
     public bool hasOrb() {
         return soulOrbs > 0;
