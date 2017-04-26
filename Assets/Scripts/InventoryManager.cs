@@ -187,11 +187,11 @@ public class InventoryManager : MonoBehaviour {
 			}
 			else {
 				if (tempSpecial == "AR" || tempSpecial == "RA")
-					areaRangeSpecial.deploy(cursorPos, playerPos);
+					areaRangeSpecial.deploy(cursorPos, cursorPos);
 				else if (tempSpecial == "AF" || tempSpecial == "FA")
 					areaForceSpecial.deploy(cursorPos, playerPos);
 				else
-					rangeForceSpecial.deploy(cursorPos, playerPos);
+					rangeForceSpecial.deploy(playerPos, cursorPos);
 
 				// update tracker
                 ScoreCounter.self.num2h ++;

@@ -26,7 +26,7 @@ public class PlayerManager : MonoBehaviour {
     [SerializeField] Image grayOutLeft, grayOutRight;
 
     private float xAxis, zAxis, basicCoolDown, leftOrbCoolDown, rightOrbCoolDown, deltaTime;
-    private Vector3 nextPosition;
+    private Vector3 nextPosition, mouseLoc;
     private Ray mouseRay;
     private RaycastHit rayHit;
     private int tempInt;
@@ -85,8 +85,8 @@ public class PlayerManager : MonoBehaviour {
             // Control Player Rotation
             mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(mouseRay, out rayHit);
-            nextPosition.Set(rayHit.point.x, lookHeight, rayHit.point.z);
-            transform.LookAt(nextPosition);
+            mouseLoc.Set(rayHit.point.x, lookHeight, rayHit.point.z);
+            transform.LookAt(mouseLoc);
 
             // Control Player Movement
             xAxis = Input.GetAxisRaw("Horizontal");
@@ -110,19 +110,19 @@ public class PlayerManager : MonoBehaviour {
                 rightOrbCoolDown = orbCoolDownTime;
                 toggleRight(true);
                 //nextPosition = new Vector3 (rayHit.point.x, 0, rayHit.point.y);
-                inventoryManager.deploySpecial(3, rayHit.point, rayHit.point); //gameObject.transform.position);
+                inventoryManager.deploySpecial(3, mouseLoc, gameObject.transform.position);
             } 
             // left hand
             else if (Input.GetKeyDown(KeyCode.Alpha1) && checkLeft()) {
                 leftOrbCoolDown = orbCoolDownTime;
                 toggleLeft(true);
-                inventoryManager.deploySpecial(1, rayHit.point, gameObject.transform.position);
+                inventoryManager.deploySpecial(1, mouseLoc, gameObject.transform.position);
             } 
             // right hand
             else if (Input.GetKeyDown(KeyCode.Alpha2) && checkRight()) {
                 rightOrbCoolDown = orbCoolDownTime;
                 toggleRight(true);
-                inventoryManager.deploySpecial(2, rayHit.point, gameObject.transform.position);
+                inventoryManager.deploySpecial(2, mouseLoc, gameObject.transform.position);
             }
             // Control Basic Attack, activates on space or left click
             else if (Input.GetMouseButtonDown(0) && basicCoolDown <= 0) {
