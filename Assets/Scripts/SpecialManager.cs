@@ -1,9 +1,33 @@
-using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 
 // this class manages the colliders and particle systems of special attacks
 
+public class SpecialManager : MonoBehaviour {
+
+    // The SFx component of the special attack
+    [SerializeField] private ParticleSystem effect;
+    //[SerializeField] private Collider areaCollider; // shouldn't need this assuming the collider is disabled along with the game object
+
+    void Awake () {
+        gameObject.SetActive(false);
+    }
+
+    // remove self when the SFx animation completes
+    void FixedUpdate () {
+        if (!effect.IsAlive())
+            gameObject.SetActive(false);
+    }
+
+    // place the special attack, face the player, enable it, and play its animation
+    public void deploy (Vector3 deployLoc, Vector3 playerLoc) {
+        transform.position = deployLoc;
+        transform.LookAt(playerLoc);
+        gameObject.SetActive(true);
+        effect.Play();
+    }
+}
+
+/* This is the old version
 public class SpecialManager : MonoBehaviour {
 
     //[SerializeField] private GameManager gameManager;
@@ -65,3 +89,4 @@ public class SpecialManager : MonoBehaviour {
         col.enabled = false;
     }
 }
+ */
