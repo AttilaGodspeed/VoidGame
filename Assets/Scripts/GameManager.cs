@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 
     // other managers
     [SerializeField] private PauseUIManager pauseUIManager;
-    //[SerializeField] private SpecialManager specialManager;
+    [SerializeField] private EndMenuManager endMenuManager;
 
     // persistant UI elements
     [SerializeField] private Text healthText;//, orbText;
@@ -59,7 +59,12 @@ public class GameManager : MonoBehaviour {
 
         // check if all portals are dead
         if (ScoreCounter.self.portalKills >= numPortals) {
-            print("All Portals are dead, woot woot!");
+            Time.timeScale = 0;
+            paused = true;
+            gameMusic.Pause();
+            pauseMusic.Play();
+
+            endMenuManager.showEndMenu(true);
         }
     }
 
@@ -82,8 +87,19 @@ public class GameManager : MonoBehaviour {
     public void damagePlayer(int damage) {
         playerHealth -= damage;
         healthText.text = "Health: " + playerHealth;
-        if (playerHealth < 1)
+        
+        // update tracker
+		ScoreCounter.self.healthLost += damage;
+
+        if (playerHealth < 1) {
             print("You are dead...");
+            Time.timeScale = 0;
+            paused = true;
+            gameMusic.Pause();
+            pauseMusic.Play();
+
+            endMenuManager.showEndMenu(false);
+        }
     }
 
     public void healPlayer(int healing) {

@@ -93,8 +93,6 @@ public class EnemyManager : MonoBehaviour {
 
                 // do damage to player
                 gameManager.damagePlayer(attackDamage);
-                // update tracker
-			    ScoreCounter.self.healthLost -= attackDamage;
             }
         }
     }
