@@ -16,7 +16,11 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void stage1() {
-		SceneManager.LoadScene("playArea");
+		SceneManager.LoadScene(1);
+	}
+
+	public void stage2() {
+		SceneManager.LoadScene(2);
 	}
 
 }

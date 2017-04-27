@@ -24,7 +24,9 @@ public class EnemyManager : MonoBehaviour {
     [SerializeField] private int attackDamage = 1; // the damage the attack does (integer)
     [SerializeField] private float attackCooldown = 0.5f; // time in seconds until it can attack again
 
-    [SerializeField] private ParticleSystem attackEffect; // attack SFx
+    [SerializeField] private EffectStack attackEffect; // attack SFx
+
+    [SerializeField] private AudioSource attackSound; // attack sound 
 
     private Transform targetPosition;
     private bool los;
@@ -88,7 +90,8 @@ public class EnemyManager : MonoBehaviour {
         if (distance < attackRange) {
             // and if off cooldown
             if (!(cooldown > 0)) {
-                attackEffect.Play();
+                attackEffect.pop(player.position);
+                attackSound.Play();
                 cooldown = attackCooldown;
 
                 // do damage to player
