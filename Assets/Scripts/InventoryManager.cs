@@ -36,17 +36,17 @@ public class InventoryManager : MonoBehaviour {
 		leftHand = "X";
 		rightHand = "X";
 
-		areaOrbs = 1;
-		rangeOrbs = 1;
-		forceOrbs = 1;
+		areaOrbs = 0;
+		rangeOrbs = 0;
+		forceOrbs = 0;
 		
 		leftHandImage.color = emptyColor;
 		rightHandImage.color = emptyColor;
 		bigLeftImage.color = emptyColor;
 		bigRightImage.color = emptyColor;
-		areaOrbText.text = "1";
-		rangeOrbText.text = "1";
-		forceOrbText.text = "1";
+		areaOrbText.text = "0";
+		rangeOrbText.text = "0";
+		forceOrbText.text = "0";
 	}
 
 	// returns true if the indicated hand is empty
@@ -93,7 +93,7 @@ public class InventoryManager : MonoBehaviour {
 		shatter.deploy(playerPos, playerPos);
 		rightHand = "X";
 		rightHandImage.color = emptyColor;
-		leftHandImage.color = emptyColor;
+		bigRightImage.color = emptyColor;
 		return true;
 	}
 
